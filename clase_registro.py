@@ -6,6 +6,7 @@ class registro:
     __hora_entrada: time
     __hora_salida: time
     __dependencia: str
+    __id_trabajador: str
     def __init__(self, fecha, hora_entrada, hora_salida, dependencia):
         self.__fecha = fecha
         self.__hora_entrada = hora_salida
@@ -17,5 +18,7 @@ class registro:
         return self.__hora_entrada
     def get_hora_salida(self):
         return self.__hora_salida
-    def obt_dependencia(self):
+    def get_dependencia(self):
         return self.__dependencia
+    def get_id_trabajador(self):
+        return self.__id_trabajador
