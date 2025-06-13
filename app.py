@@ -12,3 +12,15 @@ from controllers.gestor_trabajador import gestor_trabajador
 load_dotenv()
 app = Flask(__name__)
 app.config['SECRET_KEY'] = os.getenv('SECRET_KEY')
+
+
+@app.route("/")
+def intex():
+    return """SERVER IS RUNNING 
+Hola adriano <3."""
+    
+
+    
+
+if __name__ == '__main__':
+	app.run(debug = True)	
