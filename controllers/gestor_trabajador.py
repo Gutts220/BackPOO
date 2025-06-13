@@ -5,9 +5,7 @@ from werkzeug.security import generate_password_hash, check_password_hash
 from flask import Flask, request, render_template
 
 class gestor_trabajador:
-    pass
-
-
+    
     def nuevo_trabajador():   
         resultado= render_template('aviso.html', mensaje="No se pudo ejecutar la operación")
         if request.method == 'POST':
@@ -22,3 +20,11 @@ class gestor_trabajador:
             resultado= render_template('nuevo_trabajador.html')
         return resultado
 
+    def buscar_trabajador(legajo,dni):
+        trabajador_encontrado = trabajador.query.filter(trabajador.legajo == legajo,trabajador.dni.like(dni)).first()
+        if trabajador_encontrado:
+            return trabajador_encontrado.id
+        else:
+            return None
+                
+    
