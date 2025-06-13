@@ -5,14 +5,14 @@ db=SQLAlchemy()
 
 class trabajador(db.Model):
     __tablename__= 'trabajador'
-    id : Mapped[int] = mapped_column(primary_key=True)
-    apellido : Mapped[str] = mapped_column()
-    nombre : Mapped[str] = mapped_column() 
-    dni : Mapped[str] = mapped_column()
-    correo : Mapped[str] = mapped_column() 
-    legajo: Mapped[str] = mapped_column()
-    horas : Mapped[str] = mapped_column()
-    funcion : Mapped[str] = mapped_column()
+    __id : Mapped[int] = mapped_column(primary_key=True)
+    __apellido : Mapped[str] = mapped_column()
+    __nombre : Mapped[str] = mapped_column() 
+    __dni : Mapped[str] = mapped_column()
+    __correo : Mapped[str] = mapped_column() 
+    __legajo: Mapped[str] = mapped_column()
+    __horas : Mapped[str] = mapped_column()
+    __funcion : Mapped[str] = mapped_column()
         
     def get_id(self):
         return self.__id
