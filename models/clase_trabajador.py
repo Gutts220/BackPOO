@@ -1,7 +1,7 @@
 from flask_sqlalchemy import SQLAlchemy
-from controllers.gestor_trabajador import gestor_trabajador
 
-db = SQLAlchemy(gestor_trabajador)
+
+db=SQLAlchemy()
 
 class trabajador(db.model):
     __id : int
@@ -13,7 +13,7 @@ class trabajador(db.model):
     __horas: int
     __funcion : str
     
-    __tablename__= 'usuario'
+    __tablename__= 'trabajador'
     
     def __init__(self, db):
         self.__id = db.Column(db.Integer, primary_key=True)

@@ -6,5 +6,7 @@ from controllers.gestor_registro_horario import gestor_registro
 from controllers.gestor_trabajador import gestor_trabajador
 
 
-class app:
-    pass
+
+
+app = Flask(__name__)    
+app.config('.env')
