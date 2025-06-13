@@ -1,9 +1,9 @@
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy.orm import Mapped, mapped_column
 
-db=SQLAlchemy()
+dbT=SQLAlchemy()
 
-class trabajador(db.Model):
+class trabajador(dbT.Model):
     __tablename__= 'trabajador'
     __id : Mapped[int] = mapped_column(primary_key=True)
     __apellido : Mapped[str] = mapped_column()
