@@ -14,10 +14,13 @@ app.config['SECRET_KEY'] = os.getenv('SECRET_KEY')
 app.config['SQLALCHEMY_DATABASE_URI'] = os.getenv('DATABASE_URL')
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 dbT.init_app(app)
+GT = gestor_trabajador()
+GR = gestor_registro(GT)
 
 app.route('/')
 app.route('/nuevo_trabajador', methods = ['GET','POST'])
 
+app.route('/nuevo_registro', methods = ['GET', 'POST']) 
 
 
 @app.route("/")
@@ -26,7 +29,6 @@ def intex():
 Hola adriano <3."""
     
 
-    
 
 if __name__ == '__main__':
 	app.run(debug = True)	
