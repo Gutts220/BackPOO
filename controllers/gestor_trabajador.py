@@ -8,17 +8,17 @@ class gestor_trabajador:
     pass
 
 
-def nuevo_trabajador():   
-    resultado= render_template('aviso.html', mensaje="No se pudo ejecutar la operación")
-    if request.method == 'POST':
-        if not request.form['nombre'] or not request.form['email'] or not request.form['password']:
-            resultado=  render_template('error.html', error="Los datos ingresados no son correctos...")
+    def nuevo_trabajador():   
+        resultado= render_template('aviso.html', mensaje="No se pudo ejecutar la operación")
+        if request.method == 'POST':
+            if not request.form['nombre'] or not request.form['email'] or not request.form['password']:
+                resultado=  render_template('error.html', error="Los datos ingresados no son correctos...")
+            else:
+                nuevo_trabajador = trabajador(nombre=request.form['nombre'], correo = request.form['email'], clave=generate_password_hash(request.form['password']))       
+                dbT.session.add(nuevo_trabajador)
+                dbT.session.commit()
+                resultado=  render_template('aviso.html', mensaje="El trabajador se registró exitosamente")
         else:
-            nuevo_trabajador = trabajador(nombre=request.form['nombre'], correo = request.form['email'], clave=generate_password_hash(request.form['password']))       
-            dbT.session.add(nuevo_trabajador)
-            dbT.session.commit()
-            resultado=  render_template('aviso.html', mensaje="El trabajador se registró exitosamente")
-    else:
-        resultado= render_template('nuevo_trabajador.html')
-    return resultado
+            resultado= render_template('nuevo_trabajador.html')
+        return resultado
 
