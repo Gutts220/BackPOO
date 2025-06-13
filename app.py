@@ -8,5 +8,5 @@ from controllers.gestor_trabajador import gestor_trabajador
 
 
 
-app = Flask(__name__)    
+app = Flask(__name__)
 app.config('.env')
