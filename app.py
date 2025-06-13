@@ -17,3 +17,16 @@ dbT.init_app(app)
 
 app.route('/')
 app.route('/nuevo_trabajador', methods = ['GET','POST'])
+
+
+
+@app.route("/")
+def intex():
+    return """SERVER IS RUNNING 
+Hola adriano <3."""
+    
+
+    
+
+if __name__ == '__main__':
+	app.run(debug = True)	
