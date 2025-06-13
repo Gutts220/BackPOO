@@ -1,29 +1,18 @@
 from flask_sqlalchemy import SQLAlchemy
-
+from sqlalchemy.orm import Mapped, mapped_column
 
 db=SQLAlchemy()
 
-class trabajador(db.model):
-    __id : int
-    __apellido : str
-    __nombre: str
-    __dni : str
-    __correo : str
-    __legajo : int
-    __horas: int
-    __funcion : str
-    
+class trabajador(db.Model):
     __tablename__= 'trabajador'
-    
-    def __init__(self, db):
-        self.__id = db.Column(db.Integer, primary_key=True)
-        self.__apellido = db.model(db.String(80), nullable=False)
-        self.__nombre = db.model(db.String(80), nullable=False) 
-        self.__dni = db.model(db.String(80), nullable=False) 
-        self.__correo = db.model(db.String(80), nullable=False) 
-        self.__legajo = db.model(db.Integer, nullable=False) 
-        self.__horas = db.model(db.Integer) 
-        self.__funcion = db.model(db.String(80), nullable=False) 
+    id : Mapped[int] = mapped_column(primary_key=True)
+    apellido : Mapped[str] = mapped_column()
+    nombre : Mapped[str] = mapped_column() 
+    dni : Mapped[str] = mapped_column()
+    correo : Mapped[str] = mapped_column() 
+    legajo: Mapped[str] = mapped_column()
+    horas : Mapped[str] = mapped_column()
+    funcion : Mapped[str] = mapped_column()
         
     def get_id(self):
         return self.__id
