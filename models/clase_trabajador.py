@@ -1,7 +1,7 @@
 from flask_sqlalchemy import SQLAlchemy
-from ..app import app
+from controllers.gestor_trabajador import gestor_trabajador
 
-db = SQLAlchemy(app)
+db = SQLAlchemy(gestor_trabajador)
 
 class trabajador(db.model):
     __id : int
