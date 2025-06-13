@@ -7,24 +7,24 @@ db = SQLAlchemy()
 
 class registro(db.Model):
     __tablename__= 'registro'
-    __id: Mapped[int] = mapped_column(primary_key=True)
-    __fecha: Mapped[datetime] = mapped_column(DateTime)
-    __hora_entrada: Mapped[time] = mapped_column(Time)
-    __hora_salida: Mapped[time] = mapped_column(Time)
-    __dependencia: Mapped[str] = mapped_column()
-    __id_trabajador: Mapped[int] = mapped_column(ForeignKey("trabajador.id"))
+    id: Mapped[int] = mapped_column(primary_key=True)
+    fecha: Mapped[datetime] = mapped_column(DateTime)
+    hora_entrada: Mapped[time] = mapped_column(Time)
+    hora_salida: Mapped[time] = mapped_column(Time)
+    dependencia: Mapped[str] = mapped_column()
+    id_trabajador: Mapped[int] = mapped_column(ForeignKey("trabajador.id"))
     
     def get_fecha(self):
-        return self.__fecha
+        return self.fecha
     
     def get_hora_entrada(self):
-        return self.__hora_entrada
+        return self.hora_entrada
     
     def get_hora_salida(self):
-        return self.__hora_salida
+        return self.hora_salida
     
     def get_dependencia(self):
-        return self.__dependencia
+        return self.dependencia
     
     def get_id_trabajador(self):
-        return self.__id_trabajador
+        return self.id_trabajador
