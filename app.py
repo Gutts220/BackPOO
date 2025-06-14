@@ -31,9 +31,13 @@ Hola adriano <3."""
 def nuevo_trabajador():
     return "Vista en construcción"
 
-@app.route('/nuevo_registro', methods=['POST']) # Ruta para agregar registro de trabajadors
-def nuevo_registro():
+@app.route('/registrar_entrada', methods=['POST']) # Ruta para agregar registro de trabajadors
+def registrar_entrada():
     return GR.nuevo_registro_entrada()
+
+@app.route('/registrar_salida', methods=['POST']) # Ruta para agregar registro de trabajadors
+def registrar_salida():
+    pass
 
 
 if __name__ == '__main__':
