@@ -1,6 +1,4 @@
-from models.clase_trabajador import trabajador
-from models.clase_trabajador import dbT
-from models.clase_trabajador import trabajador
+from models.models import database, trabajador
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask import Flask, request, render_template
 
@@ -20,7 +18,7 @@ class gestor_trabajador:
             resultado= render_template('nuevo_trabajador.html')
         return resultado
 
-    def buscar_trabajador(legajo,dni):
+    def buscar_trabajador(self, legajo,dni):
         trabajador_encontrado = trabajador.query.filter(trabajador.legajo == legajo,trabajador.dni.like(dni)).first()
         if trabajador_encontrado:
             return trabajador_encontrado.id

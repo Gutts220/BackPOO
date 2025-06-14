@@ -1,4 +1,48 @@
-from models.clase_registro import registro
+from models.models import database, registro
+from controllers.gestor_trabajador import gestor_trabajador
+from flask import request, jsonify
+from datetime import datetime
+
 
 class gestor_registro:
-    pass
+    __gt: gestor_trabajador
+    def __init__(self, gt):
+        self.__gt = gt
+    def buscar_reg_fecha(self, fecha, trabajador):
+        registro_encontrado = registro.query.filter(registro.fecha == fecha, registro.idtrabajador == trabajador).first()
+        if registro_encontrado:
+            return registro_encontrado.id
+        else:
+            return None
+   
+    def nuevo_registro_entrada(self):
+        # el flujo es el siguiente, verifica que esta en post, ve si el trabajador existe, ve si no hay un registro del mismo dia, registra 
+        resultado = None
+        trabajador = None
+        nuevo_registro = None
+        data = request.get_json()
+        
+        if request.method == "POST": 
+            # dni = request.form['dni'] Descomentar para trabajar con formularios
+            # dependencia = request.form['dependencia']
+            dni = data.get("dni")
+            dependencia = data.get("dependencia")
+            legajo = data.get("legajo")
+            trabajador = self.__gt.buscar_trabajador(legajo, dni)
+            if trabajador:
+                fecha = datetime.today().date()
+                hora_entrada = datetime.now().time()
+                nuevo_registro = self.buscar_reg_fecha(fecha, trabajador) 
+                print(nuevo_registro)
+                if not nuevo_registro:
+                    nuevo_registro = registro(fecha = fecha, horaentrada = hora_entrada, horasalida = None, dependencia = dependencia, idtrabajador = trabajador)
+                    database.session.add(nuevo_registro)
+                    database.session.commit()
+                    resultado = jsonify({"Ok": "Registro creado correctamente"}), 201
+                else:
+                    resultado = jsonify({"error": "Registro ya creado"}), 409 
+
+            else:
+                resultado = jsonify({"error": "Trabajador no encontrado"}), 404
+          
+        return resultado
