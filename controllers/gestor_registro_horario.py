@@ -11,7 +11,7 @@ class gestor_registro:
     def buscar_reg_fecha(self, fecha, trabajador):
         registro_encontrado = registro.query.filter(registro.fecha == fecha, registro.idtrabajador == trabajador).first()
         if registro_encontrado:
-            return registro_encontrado.id
+            return registro_encontrado
         else:
             return None
    
@@ -42,3 +42,32 @@ class gestor_registro:
         else:
             resultado = jsonify({"error": "Trabajador no encontrado"}), 404   
         return resultado
+    
+    def registro_salida(self):
+        # el flujo es el siguiente, ve si el trabajador existe, ve si no hay una salida del mismo dia, registra 
+        resultado = None
+        trabajador = None
+        registro_entrada = None
+        # dni = request.form['dni'] Descomentar para trabajar con formularios
+        # dependencia = request.form['dependencia']
+        data = request.get_json()
+        dni = data.get("dni")
+        legajo = data.get("legajo")
+        trabajador = self.__gt.buscar_trabajador(legajo, dni)   
+        if trabajador:      #EL trabajador existe?
+            fecha = datetime.today().date()
+            hora_salida = datetime.now().time()
+            registro_entrada = self.buscar_reg_fecha(fecha, trabajador)  
+            if registro_entrada:      #Esta el registro de entrada?
+                if registro_entrada.horasalida:     #Ya habia registrado salida?
+                    resultado = jsonify({"error": "Salida ya registrada"}), 409 
+                else:
+                    registro_entrada.horasalida = hora_salida
+                    database.session.commit()
+                    resultado = jsonify({"Ok": "Salida registrada correctamente"}), 200
+            else:
+                resultado = jsonify({"error": "Registro de entrada no encontrado"}), 404 
+        else:
+            resultado = jsonify({"error": "Trabajador no encontrado"}), 404   
+        return resultado
+                

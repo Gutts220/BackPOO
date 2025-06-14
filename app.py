@@ -37,7 +37,7 @@ def registrar_entrada():
 
 @app.route('/registrar_salida', methods=['POST']) # Ruta para agregar registro de trabajadors
 def registrar_salida():
-    pass
+    return GR.registro_salida()
 
 
 if __name__ == '__main__':
