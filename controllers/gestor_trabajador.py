@@ -11,8 +11,8 @@ class gestor_trabajador:
                 resultado=  render_template('error.html', error="Los datos ingresados no son correctos...")
             else:
                 nuevo_trabajador = trabajador(nombre=request.form['nombre'], correo = request.form['email'], clave=generate_password_hash(request.form['password']))       
-                dbT.session.add(nuevo_trabajador)
-                dbT.session.commit()
+                database.session.add(nuevo_trabajador)
+                database.session.commit()
                 resultado=  render_template('aviso.html', mensaje="El trabajador se registró exitosamente")
         else:
             resultado= render_template('nuevo_trabajador.html')
