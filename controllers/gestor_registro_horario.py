@@ -72,7 +72,7 @@ class gestor_registro:
         return resultado
     
     def consultar_registros_propios(id_trabajador):
-        registros = registro.query.filter_by(id_trabajador=id_trabajador).all()
+        registros = registro.query.filter_by(idtrabajador=id_trabajador).all()
         return render_template(
             "registros_propios.html",
             registros=registros
