@@ -46,15 +46,24 @@ def ver_registros(id_trabajador):
 
 @app.route('/informe_horas', methods=['GET'])
 def informe_horas():
-    id_trabajador = request.args.get('id_trabajador', type=int)
-    fecha_inicio = request.args.get('fecha_inicio')  
-    fecha_fin = request.args.get('fecha_fin')        
-    return gestor_registro.informe_horas_trabajadas(
-        id_trabajador,
-        datetime.strptime(fecha_inicio, "%Y-%m-%d"),
-        datetime.strptime(fecha_fin, "%Y-%m-%d")
-    )
+    try:
+        id_trabajador = request.args.get('id_trabajador', type=int)
+        fecha_inicio = request.args.get('fecha_inicio')
+        fecha_fin = request.args.get('fecha_fin')
 
+        if not id_trabajador or not fecha_inicio or not fecha_fin:
+            raise ValueError("Faltan datos para generar el informe.")
+
+        fecha_inicio_dt = datetime.strptime(fecha_inicio, "%Y-%m-%d")
+        fecha_fin_dt = datetime.strptime(fecha_fin, "%Y-%m-%d")
+
+        return gestor_registro.informe_horas_trabajadas(
+            id_trabajador,
+            fecha_inicio_dt,
+            fecha_fin_dt
+        )
+    except Exception as e:
+        return render_template('error.html', error=f"Error al generar el informe: {e}")
 
 if __name__ == '__main__':
 	app.run(debug = True)	
