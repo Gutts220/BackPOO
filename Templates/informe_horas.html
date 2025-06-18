@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+        <h2>Informe de horas trabajadas</h2>
+    <p>Total de horas: {{ total_horas }}</p>
+    <table>
+        <tr>
+            <th>Fecha</th>
+            <th>Horas trabajadas</th>
+        </tr>
+        {% for d in detalle %}
+        <tr>
+            <td>{{ d.fecha }}</td>
+            <td>{{ d.horas|round(2) }}</td>
+        </tr>
+        {% endfor %}
+</table>
+</body>
+</html>

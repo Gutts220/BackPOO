@@ -1,6 +1,6 @@
 from models.models import database, registro
 from controllers.gestor_trabajador import gestor_trabajador
-from flask import request, jsonify
+from flask import request, jsonify, render_template
 from datetime import datetime
 
 
@@ -70,4 +70,35 @@ class gestor_registro:
         else:
             resultado = jsonify({"error": "Trabajador no encontrado"}), 404   
         return resultado
-                
+    
+    def consultar_registros_propios(id_trabajador):
+        registros = registro.query.filter_by(id_trabajador=id_trabajador).all()
+        return render_template(
+            "registros_propios.html",
+            registros=registros
+        )
+            
+    def informe_horas_trabajadas(id_trabajador, fecha_inicio, fecha_fin):
+        registros = registro.query.filter(
+            registro.idtrabajador == id_trabajador,
+            registro.fecha >= fecha_inicio,
+            registro.fecha <= fecha_fin
+        ).all()
+        total_horas = 0
+        detalle = []
+        for r in registros:
+            if r.hora_entrada and r.hora_salida:
+                delta = datetime.combine(r.fecha, r.hora_salida) - datetime.combine(r.fecha, r.hora_entrada)
+                horas = delta.total_seconds() / 3600
+                total_horas += horas
+            else:
+                horas = 0
+            detalle.append({
+                "fecha": r.fecha.strftime("%Y-%m-%d"),
+                "horas": horas
+            })
+        return render_template(
+            "informe_horas.html",
+            total_horas=total_horas,
+            detalle=detalle
+        )

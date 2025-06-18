@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registros de Horarios</title>
+</head>
+<body>
+        <h2>Mis registros</h2>
+    <table>
+        <tr>
+            <th>Fecha</th>
+            <th>Hora Entrada</th>
+            <th>Hora Salida</th>
+            <th>Dependencia</th>
+        </tr>
+        {% for r in registros %}
+        <tr>
+            <td>{{ r.fecha.strftime("%Y-%m-%d") }}</td>
+            <td>{{ r.hora_entrada.strftime("%H:%M") if r.hora_entrada else "" }}</td>
+            <td>{{ r.hora_salida.strftime("%H:%M") if r.hora_salida else "" }}</td>
+            <td>{{ r.dependencia }}</td>
+        </tr>
+        {% endfor %}
+    </table>
+</body>
+</html>
