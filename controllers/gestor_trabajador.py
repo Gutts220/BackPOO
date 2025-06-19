@@ -19,7 +19,9 @@ class gestor_trabajador:
         return resultado
 
     def buscar_trabajador(self, legajo,dni):
-        trabajador_encontrado = trabajador.query.filter(trabajador.legajo == legajo,trabajador.dni.like(dni)).first()
+        trabajador_encontrado = trabajador.query.filter( trabajador.legajo == legajo, trabajador.dni.like(f"%{dni}")).first()
+        print(trabajador_encontrado)
+        
         if trabajador_encontrado:
             return trabajador_encontrado.id
         else:
