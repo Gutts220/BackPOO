@@ -15,7 +15,7 @@ class gestor_registro:
         else:
             return None
    
-    def nuevo_registro_entrada(self):
+    def registrar_entrada(self):
         # el flujo es el siguiente, ve si el trabajador existe, ve si no hay un registro del mismo dia, registra 
         trabajador = None
         nuevo_registro = None
@@ -37,7 +37,7 @@ class gestor_registro:
             raise TypeError("Trabajador no encontrado")
         return "Ok"
     
-    def registro_salida(self):
+    def registrar_salida(self):
         # el flujo es el siguiente, ve si el trabajador existe, ve si no hay una salida del mismo dia, registra 
         trabajador = None
         registro_entrada = None
