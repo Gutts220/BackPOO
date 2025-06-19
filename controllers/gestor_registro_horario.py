@@ -62,14 +62,12 @@ class gestor_registro:
         return "", 204
     
     def consultar_registros_propios(legajo, dni_ultimos4, fecha_inicio=None, fecha_fin=None):
-        
         t = trabajador.query.filter(
         trabajador.legajo == legajo,
         trabajador.dni.like(f"%{dni_ultimos4}")
         ).first()
         if not t:
             return render_template('error.html', error="Trabajador no encontrado o DNI incorrecto.")
-
         query = registro.query.filter_by(idtrabajador=t.id)
         if fecha_inicio and fecha_fin:
             query = query.filter(registro.fecha >= fecha_inicio, registro.fecha <= fecha_fin)
@@ -80,7 +78,6 @@ class gestor_registro:
     )
      
     def validar_trabajador(legajo, dni_ultimos4):
-        
         return trabajador.query.filter(
             trabajador.legajo == legajo,
             trabajador.dni.like(f"%{dni_ultimos4}")
@@ -90,8 +87,7 @@ class gestor_registro:
     def informe_horas_trabajadas(legajo, fecha_inicio, fecha_fin, funcion, dependencia, dni_ultimos4):
         # Buscar el trabajador (ya validado)
         t = trabajador.query.filter(
-            trabajador.legajo == legajo,
-            trabajador.dni.like(f"%{dni_ultimos4}")
+            trabajador.funcion == funcion
         ).first()
         if not t:
             return render_template('error.html', error="Trabajador no encontrado.")
