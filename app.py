@@ -54,14 +54,14 @@ def informe_horario_trabajadores():
 @app.route('/registrar_entrada', methods=['POST'])
 def registrar_entrada():
     try:
-        return GR.nuevo_registro_entrada()
+        return GR.registrar_entrada()
     except TypeError as m:
         return render_template('error.html', error = m )
      
 @app.route('/registrar_salida', methods=['POST'])
 def registrar_salida():
     try:
-        return GR.registro_salida()
+        return GR.registrar_salida()
     except TypeError as m:
         return render_template('error.html', error = m )
     
