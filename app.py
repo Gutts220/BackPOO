@@ -34,9 +34,9 @@ def nuevo_trabajador():
 def registro_entrada():
     return render_template("registrar_entrada.html")
 
-@app.route('/registrar_salida') # Ruta para agregar registro de trabajadors
-def registrar_salida():
-    return GR.registro_salida()
+@app.route('/registro_salida') # Ruta para agregar registro de trabajadors
+def registro_salida():
+    return render_template("registrar_salida.html")
 
 @app.route('/Informe_propio')
 def informe_propio():
@@ -50,7 +50,6 @@ def informe_horario_trabajadores():
 # --------- VISTAS ---------
 
 
-
 # --------- Metodos API ---------
 @app.route('/registrar_entrada', methods=['POST'])
 def registrar_entrada():
@@ -58,9 +57,14 @@ def registrar_entrada():
         return GR.nuevo_registro_entrada()
     except TypeError as m:
         return render_template('error.html', error = m )
-        
-
-
+     
+@app.route('/registrar_salida', methods=['POST'])
+def registrar_salida():
+    try:
+        return GR.registro_salida()
+    except TypeError as m:
+        return render_template('error.html', error = m )
+    
 @app.route('/registros')
 def ver_registros():
     legajo = request.args.get('legajo')

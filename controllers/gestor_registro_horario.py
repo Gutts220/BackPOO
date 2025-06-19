@@ -17,7 +17,6 @@ class gestor_registro:
    
     def nuevo_registro_entrada(self):
         # el flujo es el siguiente, ve si el trabajador existe, ve si no hay un registro del mismo dia, registra 
-        resultado = None
         trabajador = None
         nuevo_registro = None
         legajo = request.form['legajo']
@@ -36,11 +35,10 @@ class gestor_registro:
                 raise TypeError("Registro ya creado")
         else:
             raise TypeError("Trabajador no encontrado")
-        return resultado
+        return "Ok"
     
     def registro_salida(self):
         # el flujo es el siguiente, ve si el trabajador existe, ve si no hay una salida del mismo dia, registra 
-        resultado = None
         trabajador = None
         registro_entrada = None
         legajo = request.form['legajo']
@@ -53,16 +51,15 @@ class gestor_registro:
             registro_entrada = self.buscar_reg_fecha(fecha, trabajador)  
             if registro_entrada:      #Esta el registro de entrada?
                 if registro_entrada.horasalida:     #Ya habia registrado salida?
-                    resultado = jsonify({"error": "Salida ya registrada"}), 409 
+                    raise TypeError("Salida ya registrada")
                 else:
                     registro_entrada.horasalida = hora_salida
                     database.session.commit()
-                    resultado = jsonify({"Ok": "Salida registrada correctamente"}), 200
             else:
-                resultado = jsonify({"error": "Registro de entrada no encontrado"}), 404 
+                raise TypeError("Registro de entrada no encontrado")
         else:
-            resultado = jsonify({"error": "Trabajador no encontrado"}), 404   
-        return resultado
+            raise TypeError("Trabajador no encontrado")
+        return "Ok"
     
     def consultar_registros_propios(legajo, dni_ultimos4, fecha_inicio=None, fecha_fin=None):
         
