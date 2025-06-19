@@ -20,13 +20,9 @@ class gestor_registro:
         resultado = None
         trabajador = None
         nuevo_registro = None
-
-        # dni = request.form['dni'] Descomentar para trabajar con formularios
-        # dependencia = request.form['dependencia']
-        data = request.get_json()
-        dni = data.get("dni")
-        dependencia = data.get("dependencia")
-        legajo = data.get("legajo")
+        legajo = request.form['legajo']
+        dni = request.form['dni_ultimos4'] 
+        dependencia = request.form['dependencia']
         trabajador = self.__gt.buscar_trabajador(legajo, dni)
         if trabajador:      #EL trabajador existe?
             fecha = datetime.today().date()
@@ -36,11 +32,10 @@ class gestor_registro:
                 nuevo_registro = registro(fecha = fecha, horaentrada = hora_entrada, horasalida = None, dependencia = dependencia, idtrabajador = trabajador)
                 database.session.add(nuevo_registro)    #agrego el registro
                 database.session.commit()
-                resultado = jsonify({"Ok": "Registro creado correctamente"}), 201
             else:
-                resultado = jsonify({"error": "Registro ya creado"}), 409 
+                raise TypeError("Registro ya creado")
         else:
-            resultado = jsonify({"error": "Trabajador no encontrado"}), 404   
+            raise TypeError("Trabajador no encontrado")
         return resultado
     
     def registro_salida(self):
@@ -48,11 +43,9 @@ class gestor_registro:
         resultado = None
         trabajador = None
         registro_entrada = None
-        # dni = request.form['dni'] Descomentar para trabajar con formularios
-        # dependencia = request.form['dependencia']
-        data = request.get_json()
-        dni = data.get("dni")
-        legajo = data.get("legajo")
+        legajo = request.form['legajo']
+        dni = request.form['dni_ultimos4'] 
+        dependencia = request.form['dependencia']
         trabajador = self.__gt.buscar_trabajador(legajo, dni)   
         if trabajador:      #EL trabajador existe?
             fecha = datetime.today().date()

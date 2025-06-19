@@ -18,24 +18,23 @@ app.config['SQLALCHEMY_DATABASE_URI'] = os.getenv('DATABASE_URL')
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
 database.init_app(app)
-
-
 GT = gestor_trabajador()
 GR = gestor_registro(GT)
 
-@app.route("/")  # Marcador de server corriendo
+# --------- VISTAS ---------
+@app.route("/")
 def intex():
     return render_template('index.html')
 
-@app.route('/nuevo_trabajador', methods=['GET','POST']) # Ruta para agregar trabajador
+@app.route('/nuevo_trabajador') # Ruta para agregar trabajador
 def nuevo_trabajador():
     return "Vista en construcción"
 
-@app.route('/registrar_entrada', methods=['POST']) # Ruta para agregar registro de trabajadors
-def registrar_entrada():
-    return GR.nuevo_registro_entrada()
+@app.route('/registro_entrada') # Ruta para agregar registro de trabajadors
+def registro_entrada():
+    return render_template("registrar_entrada.html")
 
-@app.route('/registrar_salida', methods=['POST']) # Ruta para agregar registro de trabajadors
+@app.route('/registrar_salida') # Ruta para agregar registro de trabajadors
 def registrar_salida():
     return GR.registro_salida()
 
@@ -46,6 +45,20 @@ def informe_propio():
 @app.route('/formulario_validacion')
 def informe_horario_trabajadores():
     return render_template('formulario_validacion.html')
+
+
+# --------- VISTAS ---------
+
+
+
+# --------- Metodos API ---------
+@app.route('/registrar_entrada', methods=['POST'])
+def registrar_entrada():
+    try:
+        return GR.nuevo_registro_entrada()
+    except TypeError as m:
+        return render_template('error.html', error = m )
+        
 
 
 @app.route('/registros')
@@ -95,6 +108,9 @@ def mostrar_informe():
     return gestor_registro.informe_horas_trabajadas(
         legajo, fecha_inicio, fecha_fin, funcion, dependencia, dni_ultimos4
     )
+    
+# --------- Metodos API ---------
+
 
 if __name__ == '__main__':
 	app.run(debug = True)	
