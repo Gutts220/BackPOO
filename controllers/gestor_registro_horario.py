@@ -35,7 +35,7 @@ class gestor_registro:
                 raise TypeError("Registro ya creado")
         else:
             raise TypeError("Trabajador no encontrado")
-        return "Ok"
+        return "", 204
     
     def registrar_salida(self):
         # el flujo es el siguiente, ve si el trabajador existe, ve si no hay una salida del mismo dia, registra 
@@ -59,7 +59,7 @@ class gestor_registro:
                 raise TypeError("Registro de entrada no encontrado")
         else:
             raise TypeError("Trabajador no encontrado")
-        return "Ok"
+        return "", 204
     
     def consultar_registros_propios(legajo, dni_ultimos4, fecha_inicio=None, fecha_fin=None):
         

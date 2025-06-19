@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html lang="es">
+    <head>
+        <meta charset="UTF-8">
+        <title>Error</title>
+        <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    </head>
+    <body>
+        <div class="mensaje-container">
+            <h2>¡Mensaje!</h2>
+            <p>{{ mensaje }}</p>
+            <a href="{{ url_for('intex') }}">Volver al inicio</a>
+        </div>
+    </body>
+</html>
