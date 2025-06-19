@@ -1,4 +1,4 @@
-from models.models import database, registro
+from models.models import database, registro, trabajador
 from controllers.gestor_trabajador import gestor_trabajador
 from flask import request, jsonify, render_template
 from datetime import datetime
@@ -71,34 +71,68 @@ class gestor_registro:
             resultado = jsonify({"error": "Trabajador no encontrado"}), 404   
         return resultado
     
-    def consultar_registros_propios(id_trabajador):
-        registros = registro.query.filter_by(idtrabajador=id_trabajador).all()
+    def consultar_registros_propios(legajo, dni_ultimos4, fecha_inicio=None, fecha_fin=None):
+        
+        t = trabajador.query.filter(
+        trabajador.legajo == legajo,
+        trabajador.dni.like(f"%{dni_ultimos4}")
+        ).first()
+        if not t:
+            return render_template('error.html', error="Trabajador no encontrado o DNI incorrecto.")
+
+        query = registro.query.filter_by(idtrabajador=t.id)
+        if fecha_inicio and fecha_fin:
+            query = query.filter(registro.fecha >= fecha_inicio, registro.fecha <= fecha_fin)
+        registros = query.all()
         return render_template(
             "registros_propios.html",
             registros=registros
-        )
+    )
+     
+    def validar_trabajador(legajo, dni_ultimos4):
+        
+        return trabajador.query.filter(
+            trabajador.legajo == legajo,
+            trabajador.dni.like(f"%{dni_ultimos4}")
+        ).first()
+     
             
-    def informe_horas_trabajadas(id_trabajador, fecha_inicio, fecha_fin):
+    def informe_horas_trabajadas(legajo, fecha_inicio, fecha_fin, funcion, dependencia, dni_ultimos4):
+        # Buscar el trabajador (ya validado)
+        t = trabajador.query.filter(
+            trabajador.legajo == legajo,
+            trabajador.dni.like(f"%{dni_ultimos4}")
+        ).first()
+        if not t:
+            return render_template('error.html', error="Trabajador no encontrado.")
+
+        # Buscar registros por id_trabajador, fechas y dependencia
         registros = registro.query.filter(
-            registro.idtrabajador == id_trabajador,
+            registro.idtrabajador == t.id,
             registro.fecha >= fecha_inicio,
-            registro.fecha <= fecha_fin
+            registro.fecha <= fecha_fin,
+            registro.dependencia == dependencia
         ).all()
-        total_horas = 0
+
         detalle = []
+        total_horas = 0
         for r in registros:
-            if r.hora_entrada and r.hora_salida:
-                delta = datetime.combine(r.fecha, r.hora_salida) - datetime.combine(r.fecha, r.hora_entrada)
+            if r.horaentrada and r.horasalida:
+                delta = datetime.combine(r.fecha, r.horasalida) - datetime.combine(r.fecha, r.horaentrada)
                 horas = delta.total_seconds() / 3600
                 total_horas += horas
             else:
                 horas = 0
             detalle.append({
+                "apellido": t.apellido,
+                "nombre": t.nombre,
                 "fecha": r.fecha.strftime("%Y-%m-%d"),
+                "horaentrada": r.horaentrada.strftime("%H:%M") if r.horaentrada else "",
+                "horasalida": r.horasalida.strftime("%H:%M") if r.horasalida else "",
                 "horas": horas
             })
         return render_template(
             "informe_horas.html",
-            total_horas=total_horas,
-            detalle=detalle
+            detalle=detalle,
+            total_horas=total_horas
         )

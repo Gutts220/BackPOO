@@ -3,9 +3,18 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
     <title>Document</title>
 </head>
 <body>
-    
+    <div class="menu-container">
+        <h1>Menú Principal</h1>
+        <ul class="menu-list">
+            <li><a href="/nuevo_trabajador">1. Registrar nuevo trabajador</a></li>
+            <li><a href="/nuevo_registro">2. Registrar entrada/salida</a></li>
+            <li><a href="/Informe_propio">3  Consultar registro horario propio </a></li>
+            <li><a href="/formulario_validacion">4. Generar informe de horas</a></li>
+        </ul>
+    </div>
 </body>
 </html>

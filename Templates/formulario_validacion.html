@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <title>Buscar Trabajador</title>
+    
+</head>
+<body>
+    <div class="form-container">
+        <h2>Generar Informe</h2>
+        <form method="post" action="{{ url_for('informe_horas') }}" class="form-container">
+            <h2>Verificación de trabajador</h2>
+            <label>Legajo:</label>
+            <input type="text" name="legajo" value="{{ legajo }}" required>
+            <label>Últimos 4 dígitos del DNI:</label>
+            <input type="text" name="dni_ultimos4" value="{{ dni_ultimos4 }}" required>
+            <button type="submit">Verificar</button>
+        </form>
+    </div>
+</body>
+</html>

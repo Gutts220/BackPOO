@@ -25,8 +25,7 @@ GR = gestor_registro(GT)
 
 @app.route("/")  # Marcador de server corriendo
 def intex():
-    return """SERVER IS RUNNING 
-Hola adriano <3."""
+    return render_template('index.html')
 
 @app.route('/nuevo_trabajador', methods=['GET','POST']) # Ruta para agregar trabajador
 def nuevo_trabajador():
@@ -40,30 +39,62 @@ def registrar_entrada():
 def registrar_salida():
     return GR.registro_salida()
 
-@app.route('/registros/<int:id_trabajador>')
-def ver_registros(id_trabajador):
-    return gestor_registro.consultar_registros_propios(id_trabajador)
+@app.route('/Informe_propio')
+def informe_propio():
+    return render_template('Informe_propio.html')
 
-@app.route('/informe_horas', methods=['GET'])
+@app.route('/formulario_validacion')
+def informe_horario_trabajadores():
+    return render_template('formulario_validacion.html')
+
+
+@app.route('/registros')
+def ver_registros():
+    legajo = request.args.get('legajo')
+    dni_ultimos4 = request.args.get('dni_ultimos4')
+    fecha_inicio = request.args.get('fecha_inicio')
+    fecha_fin = request.args.get('fecha_fin')
+    if not legajo or not dni_ultimos4:
+        return render_template('error.html', error="Faltan datos para la búsqueda.")
+    return gestor_registro.consultar_registros_propios(legajo, dni_ultimos4, fecha_inicio, fecha_fin)
+
+@app.route('/informe_horas', methods=['GET', 'POST'])
 def informe_horas():
-    try:
-        id_trabajador = request.args.get('id_trabajador', type=int)
-        fecha_inicio = request.args.get('fecha_inicio')
-        fecha_fin = request.args.get('fecha_fin')
+    if request.method == 'POST':
+        # Primer paso: validar legajo y DNI
+        legajo = request.form.get('legajo')
+        dni_ultimos4 = request.form.get('dni_ultimos4')
+        trabajador = gestor_registro.validar_trabajador(legajo, dni_ultimos4)
+        if not trabajador:
+            return render_template('error.html', error="Legajo o DNI incorrecto.")
+        # Si es válido, mostrar el segundo formulario
+        return render_template('formulario_periodo.html', legajo=legajo, dni_ultimos4=dni_ultimos4)
+    else:
+        # Mostrar el primer formulario
+        return render_template('formulario_validacion.html')
+    
+@app.route('/mostrar_informe', methods=['POST'])
+def mostrar_informe():
+    legajo = request.form.get('legajo')
+    dni_ultimos4 = request.form.get('dni_ultimos4')
+    fecha_inicio = request.form.get('fecha_inicio')
+    fecha_fin = request.form.get('fecha_fin')
+    funcion = request.form.get('funcion')
+    dependencia = request.form.get('dependencia')
 
-        if not id_trabajador or not fecha_inicio or not fecha_fin:
-            raise ValueError("Faltan datos para generar el informe.")
+    # Buscar el trabajador 
+    trabajador = gestor_registro.validar_trabajador(legajo, dni_ultimos4)
+    if not trabajador:
+        return render_template('error.html', error="Trabajador no encontrado.")
 
-        fecha_inicio_dt = datetime.strptime(fecha_inicio, "%Y-%m-%d")
-        fecha_fin_dt = datetime.strptime(fecha_fin, "%Y-%m-%d")
-
-        return gestor_registro.informe_horas_trabajadas(
-            id_trabajador,
-            fecha_inicio_dt,
-            fecha_fin_dt
-        )
-    except Exception as e:
-        return render_template('error.html', error=f"Error al generar el informe: {e}")
+    # Verificar función y dependencia
+    if trabajador.funcion != funcion:
+        return render_template('error.html', error="La función no coincide con la registrada para el trabajador.")
+    
+    # Ahora sí, mostrar el informe (filtrando por legajo, fechas y dependencia)
+    return gestor_registro.informe_horas_trabajadas(
+        legajo, fecha_inicio, fecha_fin, funcion, dependencia, dni_ultimos4
+    )
 
 if __name__ == '__main__':
 	app.run(debug = True)	

@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
     <title>Registros de Horarios</title>
 </head>
 <body>
@@ -17,8 +18,8 @@
         {% for r in registros %}
         <tr>
             <td>{{ r.fecha.strftime("%Y-%m-%d") }}</td>
-            <td>{{ r.hora_entrada.strftime("%H:%M") if r.hora_entrada else "" }}</td>
-            <td>{{ r.hora_salida.strftime("%H:%M") if r.hora_salida else "" }}</td>
+            <td>{{ r.horaentrada.strftime("%H:%M") if r.horaentrada else "" }}</td>
+            <td>{{ r.horasalida.strftime("%H:%M") if r.horasalida else "" }}</td>
             <td>{{ r.dependencia }}</td>
         </tr>
         {% endfor %}

@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <title>Buscar Trabajador</title>
+    
+</head>
+<body>
+    <div class="form-container">
+        <h2>Generar Informe</h2>
+        <form method="post" action="{{ url_for('mostrar_informe') }}" class="form-container">
+            <input type="hidden" name="legajo" value="{{ legajo }}">
+            <input type="hidden" name="dni_ultimos4" value="{{ dni_ultimos4 }}">
+            <h2>Datos del informe</h2>
+            <label>Fecha inicio:</label>
+            <input type="date" name="fecha_inicio" required>
+            <label>Fecha fin:</label>
+            <input type="date" name="fecha_fin" required>
+            <label>Función:</label>
+            <input type="text" name="funcion" required>
+            <label>Dependencia:</label>
+            <input type="text" name="dependencia" required>
+            <button type="submit">Generar informe</button>
+        </form>
+    </div>
+</body>
+</html>
